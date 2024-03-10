@@ -1,0 +1,571 @@
+desc: --massif-out-file=massif.out
+cmd: ./build/tests/example_kem
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=191876
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=257893
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=763203
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=820970
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=946753
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=1004520
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=1130303
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=1188070
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=1413412
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=detailed
+n1: 224 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 224 0x10AB7C: OQS_MEM_aligned_alloc (common.c:280)
+  n1: 224 0x10A18B: OQS_SHA3_sha3_256_inc_init (xkcp_sha3.c:202)
+   n1: 224 0x10A11F: OQS_SHA3_sha3_256 (xkcp_sha3.c:195)
+    n1: 224 0x1099CA: pqcrystals_kyber768_ref_keypair (kem.c:30)
+     n1: 224 0x1098E7: OQS_KEM_kyber_768_keypair (kem_kyber_768.c:71)
+      n1: 224 0x10926B: example_stack (example_kem.c:53)
+       n0: 224 0x1096ED: main (example_kem.c:158)
+  n0: 0 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=10
+#-----------
+time=1470801
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=1576043
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=1833036
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=1890311
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=2008394
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=2065669
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=2183752
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=2241027
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=3077426
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=3105904
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=3673331
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=3781683
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=4038676
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=4095951
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=4214034
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=detailed
+n1: 224 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 224 0x10AB7C: OQS_MEM_aligned_alloc (common.c:280)
+  n1: 224 0x10A700: OQS_SHA3_shake128_inc_init (xkcp_sha3.c:322)
+   n2: 224 0x1648C5: gen_a_row (indcpa.c:201)
+    n2: 224 0x164EAF: pqcrystals_kyber768_ref_indcpa_enc (indcpa.c:317)
+     n1: 224 0x109BFE: pqcrystals_kyber768_ref_dec (kem.c:114)
+      n1: 224 0x109949: OQS_KEM_kyber_768_decaps (kem_kyber_768.c:123)
+       n1: 224 0x109373: example_stack (example_kem.c:71)
+        n0: 224 0x1096ED: main (example_kem.c:158)
+     n0: 0 in 1 place, below massif's threshold (1.00%)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+  n0: 0 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=25
+#-----------
+time=4271309
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=4389392
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=4446667
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=5298322
+mem_heap_B=224
+mem_heap_extra_B=24
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=5335747
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=peak
+n7: 6064 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2400 0x109491: example_heap (example_kem.c:111)
+  n0: 2400 0x1096F6: main (example_kem.c:158)
+ n1: 1184 0x10947D: example_heap (example_kem.c:110)
+  n0: 1184 0x1096F6: main (example_kem.c:158)
+ n1: 1088 0x1094A5: example_heap (example_kem.c:112)
+  n0: 1088 0x1096F6: main (example_kem.c:158)
+ n1: 1024 0x48E8BA3: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7CDF: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F6F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+    n1: 1024 0x48F56D4: _IO_new_file_xsputn (fileops.c:1243)
+     n1: 1024 0x48F56D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+      n1: 1024 0x48EAF1B: puts (ioputs.c:40)
+       n1: 1024 0x1093E3: example_stack (example_kem.c:80)
+        n0: 1024 0x1096ED: main (example_kem.c:158)
+ n2: 224 0x10AB7C: OQS_MEM_aligned_alloc (common.c:280)
+  n1: 224 0x10A521: OQS_SHA3_sha3_512_inc_init (xkcp_sha3.c:280)
+   n2: 224 0x10A4B5: OQS_SHA3_sha3_512 (xkcp_sha3.c:273)
+    n1: 224 0x164B4C: pqcrystals_kyber768_ref_indcpa_keypair (indcpa.c:248)
+     n1: 224 0x109972: pqcrystals_kyber768_ref_keypair (kem.c:27)
+      n2: 224 0x1098E7: OQS_KEM_kyber_768_keypair (kem_kyber_768.c:71)
+       n1: 224 0x10B631: OQS_KEM_keypair (kem.c:396)
+        n1: 224 0x10955E: example_heap (example_kem.c:124)
+         n0: 224 0x1096F6: main (example_kem.c:158)
+       n0: 0 in 1 place, below massif's threshold (1.00%)
+    n0: 0 in 2 places, all below massif's threshold (1.00%)
+  n0: 0 in 3 places, all below massif's threshold (1.00%)
+ n1: 80 0x10981B: OQS_KEM_kyber_768_new (kem_kyber_768.c:11)
+  n1: 80 0x10B4D3: OQS_KEM_new (kem.c:333)
+   n1: 80 0x109449: example_heap (example_kem.c:103)
+    n0: 80 0x1096F6: main (example_kem.c:158)
+ n0: 64 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=30
+#-----------
+time=5398599
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=5903909
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=5962678
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=6088461
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=6147230
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=6273013
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=6331782
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=6557124
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=detailed
+n7: 6064 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2400 0x109491: example_heap (example_kem.c:111)
+  n0: 2400 0x1096F6: main (example_kem.c:158)
+ n1: 1184 0x10947D: example_heap (example_kem.c:110)
+  n0: 1184 0x1096F6: main (example_kem.c:158)
+ n1: 1088 0x1094A5: example_heap (example_kem.c:112)
+  n0: 1088 0x1096F6: main (example_kem.c:158)
+ n1: 1024 0x48E8BA3: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7CDF: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F6F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+    n1: 1024 0x48F56D4: _IO_new_file_xsputn (fileops.c:1243)
+     n1: 1024 0x48F56D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+      n1: 1024 0x48EAF1B: puts (ioputs.c:40)
+       n1: 1024 0x1093E3: example_stack (example_kem.c:80)
+        n0: 1024 0x1096ED: main (example_kem.c:158)
+ n2: 224 0x10AB7C: OQS_MEM_aligned_alloc (common.c:280)
+  n1: 224 0x10A18B: OQS_SHA3_sha3_256_inc_init (xkcp_sha3.c:202)
+   n2: 224 0x10A11F: OQS_SHA3_sha3_256 (xkcp_sha3.c:195)
+    n1: 224 0x1099CA: pqcrystals_kyber768_ref_keypair (kem.c:30)
+     n2: 224 0x1098E7: OQS_KEM_kyber_768_keypair (kem_kyber_768.c:71)
+      n1: 224 0x10B631: OQS_KEM_keypair (kem.c:396)
+       n1: 224 0x10955E: example_heap (example_kem.c:124)
+        n0: 224 0x1096F6: main (example_kem.c:158)
+      n0: 0 in 1 place, below massif's threshold (1.00%)
+    n0: 0 in 4 places, all below massif's threshold (1.00%)
+  n0: 0 in 3 places, all below massif's threshold (1.00%)
+ n1: 80 0x10981B: OQS_KEM_kyber_768_new (kem_kyber_768.c:11)
+  n1: 80 0x10B4D3: OQS_KEM_new (kem.c:333)
+   n1: 80 0x109449: example_heap (example_kem.c:103)
+    n0: 80 0x1096F6: main (example_kem.c:158)
+ n0: 64 in 2 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=38
+#-----------
+time=6614533
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=6719775
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=6976768
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=7035145
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=detailed
+n6: 5840 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2400 0x109491: example_heap (example_kem.c:111)
+  n0: 2400 0x1096F6: main (example_kem.c:158)
+ n1: 1184 0x10947D: example_heap (example_kem.c:110)
+  n0: 1184 0x1096F6: main (example_kem.c:158)
+ n1: 1088 0x1094A5: example_heap (example_kem.c:112)
+  n0: 1088 0x1096F6: main (example_kem.c:158)
+ n1: 1024 0x48E8BA3: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x48F7CDF: _IO_doallocbuf (genops.c:347)
+   n1: 1024 0x48F6F5F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+    n1: 1024 0x48F56D4: _IO_new_file_xsputn (fileops.c:1243)
+     n1: 1024 0x48F56D4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+      n1: 1024 0x48EAF1B: puts (ioputs.c:40)
+       n1: 1024 0x1093E3: example_stack (example_kem.c:80)
+        n0: 1024 0x1096ED: main (example_kem.c:158)
+ n1: 80 0x10981B: OQS_KEM_kyber_768_new (kem_kyber_768.c:11)
+  n1: 80 0x10B4D3: OQS_KEM_new (kem.c:333)
+   n1: 80 0x109449: example_heap (example_kem.c:103)
+    n0: 80 0x1096F6: main (example_kem.c:158)
+ n0: 64 in 3 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=42
+#-----------
+time=7153228
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=7211605
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=7329688
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=7388065
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=8224464
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=8252942
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=8820389
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=8916838
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=9185734
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=9244111
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=9362194
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=9420571
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=9538654
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=9597031
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=10448686
+mem_heap_B=6064
+mem_heap_extra_B=96
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=10477929
+mem_heap_B=5840
+mem_heap_extra_B=56
+mem_stacks_B=0
+heap_tree=empty

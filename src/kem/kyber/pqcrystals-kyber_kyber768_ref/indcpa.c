@@ -193,6 +193,36 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
   xof_release(&state);
 }
 
+void gen_a_row(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed) {
+  unsigned int ctr, j, k;
+  unsigned int buflen, off;
+  uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2];
+  xof_state state;
+  OQS_SHA3_shake128_inc_init(&state);
+
+  for(j=0;j<KYBER_K;j++) {
+    if(transposed)
+      xof_absorb(&state, seed, 0, j);
+    else
+      xof_absorb(&state, seed, j, 0);
+
+    xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
+    buflen = GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES;
+    ctr = rej_uniform(a->vec[j].coeffs, KYBER_N, buf, buflen);
+
+    while(ctr < KYBER_N) {
+      off = buflen % 3;
+      for(k = 0; k < off; k++)
+        buf[k] = buf[buflen - off + k];
+      xof_squeezeblocks(buf + off, 1, &state);
+      buflen = off + XOF_BLOCKBYTES;
+      ctr += rej_uniform(a->vec[j].coeffs + ctr, KYBER_N - ctr, buf, buflen);
+    }
+  }
+  
+  xof_release(&state);
+}
+
 /*************************************************
 * Name:        indcpa_keypair
 *
@@ -212,12 +242,10 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   const uint8_t *publicseed = buf;
   const uint8_t *noiseseed = buf+KYBER_SYMBYTES;
   uint8_t nonce = 0;
-  polyvec a[KYBER_K], e, pkpv, skpv;
+  polyvec e, pkpv, skpv;
 
   randombytes(buf, KYBER_SYMBYTES);
   hash_g(buf, buf, KYBER_SYMBYTES);
-
-  gen_a(a, publicseed);
 
   for(i=0;i<KYBER_K;i++)
     poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++);
@@ -229,7 +257,11 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
 
   // matrix-vector multiplication
   for(i=0;i<KYBER_K;i++) {
-    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a[i], &skpv);
+    polyvec a_row;
+
+    gen_a_row(&a_row, publicseed, 0);
+
+    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a_row, &skpv);
     poly_tomont(&pkpv.vec[i]);
   }
 
@@ -269,7 +301,6 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
 
   unpack_pk(&pkpv, seed, pk);
   poly_frommsg(&k, m);
-  gen_at(at, seed);
 
   for(i=0;i<KYBER_K;i++)
     poly_getnoise_eta1(sp.vec+i, coins, nonce++);
@@ -280,8 +311,13 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
   polyvec_ntt(&sp);
 
   // matrix-vector multiplication
-  for(i=0;i<KYBER_K;i++)
-    polyvec_basemul_acc_montgomery(&b.vec[i], &at[i], &sp);
+  for(i=0;i<KYBER_K;i++) {
+    polyvec a_rowt;
+
+    gen_a_row(&a_rowt, seed, 1);
+
+    polyvec_basemul_acc_montgomery(&b.vec[i], &a_rowt, &sp);
+  }
 
   polyvec_basemul_acc_montgomery(&v, &pkpv, &sp);
 
