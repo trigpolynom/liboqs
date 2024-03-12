@@ -7,6 +7,9 @@
 #include "ntt.h"
 #include "symmetric.h"
 #include "randombytes.h"
+#include <assert.h>
+#include <string.h>
+
 
 /*************************************************
 * Name:        pack_pk
@@ -221,6 +224,16 @@ void gen_a_row(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed) {
   }
   
   xof_release(&state);
+
+}
+
+void pack_pk_poly(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
+                  const poly *pkpv_poly, size_t poly_index) {
+  // Ensure we're not exceeding the bounds of the pk array for the poly_index
+  assert(poly_index < KYBER_K);
+  
+  // Serialize the polynomial into the correct position in the pk array
+  poly_tobytes(pk + poly_index * KYBER_POLYBYTES, pkpv_poly);
 }
 
 /*************************************************
@@ -242,35 +255,76 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   const uint8_t *publicseed = buf;
   const uint8_t *noiseseed = buf+KYBER_SYMBYTES;
   uint8_t nonce = 0;
-  polyvec e, pkpv, skpv;
+  polyvec skpv;
 
   randombytes(buf, KYBER_SYMBYTES);
   hash_g(buf, buf, KYBER_SYMBYTES);
 
   for(i=0;i<KYBER_K;i++)
     poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++);
-  for(i=0;i<KYBER_K;i++)
-    poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++);
+  // for(i=0;i<KYBER_K;i++)
+  //   poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++);
 
   polyvec_ntt(&skpv);
-  polyvec_ntt(&e);
+  // polyvec_ntt(&e);
 
   // matrix-vector multiplication
   for(i=0;i<KYBER_K;i++) {
-    polyvec a_row;
+    polyvec a_row; 
+    poly e_poly, pkpv_poly;
 
     gen_a_row(&a_row, publicseed, 0);
 
-    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a_row, &skpv);
-    poly_tomont(&pkpv.vec[i]);
+    poly_getnoise_eta1(&e_poly, noiseseed, nonce++);
+
+    poly_ntt(&e_poly);
+
+    polyvec_basemul_acc_montgomery(&pkpv_poly, &a_row, &skpv);
+    poly_tomont(&pkpv_poly);
+    poly_add(&pkpv_poly, &pkpv_poly, &e_poly);
+    poly_reduce(&pkpv_poly);
+    pack_pk_poly(pk, &pkpv_poly, i);
   }
 
-  polyvec_add(&pkpv, &pkpv, &e);
-  polyvec_reduce(&pkpv);
+  // polyvec_add(&pkpv, &pkpv, &e);
+  // polyvec_reduce(&pkpv);
 
+  for (i = 0; i < KYBER_SYMBYTES; i++) {
+    pk[KYBER_POLYVECBYTES + i] = publicseed[i];
+  }
   pack_sk(sk, &skpv);
-  pack_pk(pk, &pkpv, publicseed);
+  // pack_pk(pk, &pkpv, publicseed);
 }
+
+void polyvec_schoolbook_mult(poly *r, const polyvec *a, const polyvec *b) {
+
+  // Temporary polynomial to store the intermediate result
+  int16_t temp[KYBER_N] = {0};
+  int16_t result[KYBER_N] = {0};
+
+  for(unsigned int i = 0; i < KYBER_K; i++) {
+    // Clear temporary storage for each polynomial multiplication
+    memset(temp, 0, sizeof(temp));
+
+    // Perform schoolbook multiplication
+    for(unsigned int j = 0; j < KYBER_N; j++) {
+      for(unsigned int k = 0; k < KYBER_N; k++) {
+        // Assuming mod operation is correctly implemented for negative numbers
+        temp[(j+k)%KYBER_N] = (temp[(j+k)%KYBER_N] + a->vec[i].coeffs[j] * b->vec[i].coeffs[k]) % KYBER_Q;
+        // Implement the mod operation if not using % or handle negative values properly
+      }
+    }
+
+    // Accumulate the results
+    for(unsigned int j = 0; j < KYBER_N; j++) {
+      result[j] = (result[j] + temp[j]) % KYBER_Q;
+    }
+  }
+
+  // Copy the accumulated result to the result polynomial
+  memcpy(r->coeffs, result, sizeof(result));
+}
+
 
 /*************************************************
 * Name:        indcpa_enc
@@ -316,10 +370,10 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
 
     gen_a_row(&a_rowt, seed, 1);
 
-    polyvec_basemul_acc_montgomery(&b.vec[i], &a_rowt, &sp);
+    polyvec_schoolbook_mult(&b.vec[i], &a_rowt, &sp);
   }
 
-  polyvec_basemul_acc_montgomery(&v, &pkpv, &sp);
+  polyvec_schoolbook_mult(&v, &pkpv, &sp);
 
   polyvec_invntt_tomont(&b);
   poly_invntt_tomont(&v);

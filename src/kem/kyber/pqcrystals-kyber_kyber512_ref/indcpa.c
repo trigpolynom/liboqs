@@ -193,37 +193,6 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
   xof_release(&state);
 }
 
-void gen_a_row(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed) {
-  unsigned int ctr, j, k;
-  unsigned int buflen, off;
-  uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2];
-  xof_state state;
-  OQS_SHA3_shake128_inc_init(&state);
-
-  for(j=0;j<KYBER_K;j++) {
-    if(transposed)
-      xof_absorb(&state, seed, 0, j);
-    else
-      xof_absorb(&state, seed, j, 0);
-
-    xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
-    buflen = GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES;
-    ctr = rej_uniform(a->vec[j].coeffs, KYBER_N, buf, buflen);
-
-    while(ctr < KYBER_N) {
-      off = buflen % 3;
-      for(k = 0; k < off; k++)
-        buf[k] = buf[buflen - off + k];
-      xof_squeezeblocks(buf + off, 1, &state);
-      buflen = off + XOF_BLOCKBYTES;
-      ctr += rej_uniform(a->vec[j].coeffs + ctr, KYBER_N - ctr, buf, buflen);
-    }
-  }
-  
-  xof_release(&state);
-
-}
-
 
 /*************************************************
 * Name:        indcpa_keypair
@@ -244,34 +213,25 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   const uint8_t *publicseed = buf;
   const uint8_t *noiseseed = buf+KYBER_SYMBYTES;
   uint8_t nonce = 0;
-  polyvec skpv;
+  polyvec a[KYBER_K], e, pkpv, skpv;
 
   randombytes(buf, KYBER_SYMBYTES);
   hash_g(buf, buf, KYBER_SYMBYTES);
 
+  gen_a(a, publicseed);
+
   for(i=0;i<KYBER_K;i++)
     poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++);
-  // for(i=0;i<KYBER_K;i++)
-  //   poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++);
+  for(i=0;i<KYBER_K;i++)
+    poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++);
 
   polyvec_ntt(&skpv);
-  // polyvec_ntt(&e);
+  polyvec_ntt(&e);
 
   // matrix-vector multiplication
   for(i=0;i<KYBER_K;i++) {
-    polyvec a_row, e_poly, pkpv_poly;
-
-    gen_a_row(&a_row, publicseed, 0);
-
-    poly_getnoise_eta1(&e_poly, noiseseed, nonce++);
-
-    poly_ntt(&e_poly);
-
-    polyvec_basemul_acc_montgomery(&pkpv_poly, &a_row, &skpv);
-    poly_tomont(&pkpv_poly);
-    poly_add(&pkpv_poly, &pkpv_poly, &e_poly);
-    poly_reduce(&pkpv_poly);
-    
+    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a[i], &skpv);
+    poly_tomont(&pkpv.vec[i]);
   }
 
   polyvec_add(&pkpv, &pkpv, &e);
